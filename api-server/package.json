@@ -1,0 +1,19 @@
+{
+  "name": "api-server",
+  "version": "1.0.0",
+  "description": "Api server for authentication and contacts crud",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sidv93/knolskape-coding-assignment.git"
+  },
+  "author": "Siddharth Venkatesh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sidv93/knolskape-coding-assignment/issues"
+  },
+  "homepage": "https://github.com/sidv93/knolskape-coding-assignment#readme"
+}
