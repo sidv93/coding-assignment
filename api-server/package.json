@@ -2,9 +2,11 @@
   "name": "api-server",
   "version": "1.0.0",
   "description": "Api server for authentication and contacts crud",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "tsc": "tsc",
+    "build": "tsc",
+    "lint": "eslint ./src"
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,33 @@
   "bugs": {
     "url": "https://github.com/sidv93/knolskape-coding-assignment/issues"
   },
-  "homepage": "https://github.com/sidv93/knolskape-coding-assignment#readme"
+  "homepage": "https://github.com/sidv93/knolskape-coding-assignment#readme",
+  "devDependencies": {
+    "@types/compression": "^1.7.0",
+    "@types/cors": "^2.8.7",
+    "@types/express": "^4.17.8",
+    "@types/helmet": "0.0.48",
+    "@types/http-status": "^1.1.2",
+    "@types/node": "^14.6.4",
+    "@types/uuid": "^8.3.0",
+    "@typescript-eslint/eslint-plugin": "^4.0.1",
+    "@typescript-eslint/parser": "^4.0.1",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "eslint": "^7.8.1",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "typescript": "^4.0.2"
+  },
+  "dependencies": {
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "helmet": "^4.1.0",
+    "http-status": "^1.4.2",
+    "uuid": "^8.3.0"
+  }
 }
