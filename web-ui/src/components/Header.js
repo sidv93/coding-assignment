@@ -1,5 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import Logout from '../assets/icons/logout.svg';
+import Ellipse49 from '../assets/icons/ellipse49.svg';
+import Ellipse50 from '../assets/icons/ellipse50.svg';
 
 const Container = styled.div`
     width: 100%;
@@ -11,24 +14,12 @@ const Container = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    &:before {
-        content: '';
-        position: absolute;
-        width: 209.95px;
-        height: 152.48px;
-        left: 0px;
-        top: 24.49px;
-        background: linear-gradient(90.2deg, #097AFF 5.78%, #0041E8 100%);
-        opacity: 0.6;
-        transform: rotate(-25.13deg);
-        z-index: -1;
-    }
 `;
 const DetailsContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    z-index: 2;
 `;
 const ProfilePicture = styled.div`
     width: 40px;
@@ -67,25 +58,43 @@ const Email = styled.p`
     margin: 0;
     padding: 0;
 `;
-const LogoutContainer = styled.div`
-    height: 50px;
+const LogoutButton = styled.img`
+    /* height: 50px;
     width: 100px;
-    background: white;
+    background: white; */
+    cursor: pointer;
+    z-index: 2;
+`;
+const El49 = styled.img`
+    position: absolute;
+    width: 241.95px;
+    height: 81.48px;
+    right: -54px;
+    top: 5px;
+    z-index: 1;
+`;
+const El50 = styled.img`
+    position: absolute;
+    width: 224.95px;
+    height: 152.48px;
+    left: 0px;
+    top: -44.49px;
+    z-index: 1;
 `;
 
-const Header = () => {
+const Header = ({ details }) => {
     return (
         <Container>
+            <El49 src={Ellipse49} />
+            <El50 src={Ellipse50} />
             <DetailsContainer>
                 <ProfilePicture />
                 <NameEmailContainer>
                     <Name>Alex Costa</Name>
-                    <Email>alex.costa@gmail.com</Email>
+                    <Email>siddhuv93@gmail.com</Email>
                 </NameEmailContainer>
             </DetailsContainer>
-            <LogoutContainer>
-
-            </LogoutContainer>
+            <LogoutButton src={Logout} />
         </Container>
     );
 };

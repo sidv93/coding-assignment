@@ -4,10 +4,11 @@ import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import cors from 'cors';
 import { successhandler } from './middlewares';
+import router from './router';
 
 const app = express();
 
-app.set('port', process.env.API_PORT || 80);
+app.set('port', process.env.API_PORT || 4000);
 app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -24,7 +25,7 @@ process.on('SIGINT', async () => {
     process.exit(0);
 });
 
-// app.use(router);
+app.use(router);
 app.use(successhandler);
 
 export default app;

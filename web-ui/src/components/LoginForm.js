@@ -64,7 +64,7 @@ const LoginForm = () => {
         console.log('response', response.accessToken);
     }
     const handleLoginFailure = (response) => {
-       console.log('Failed to login ', response);
+        console.log('Failed to login ', response);
     }
     return (
         <Container>
