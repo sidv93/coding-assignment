@@ -1,11 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
 import axios from 'axios';
-import path from 'path';
-import secrets from '../secrets.json';
+import { v4 as uuid } from 'uuid';
+import { ApiSuccess } from '../utils';
+import { GeneralError, NotFound } from '../utils/errors';
+import { User } from '../models';
 
-const { google } = require('googleapis');
-const people = google.people('v1');
-const { authenticate } = require('@google-cloud/local-auth');
+// const { google } = require('googleapis');
+// const people = google.people('v1');
+// const { authenticate } = require('@google-cloud/local-auth');
 
 // (async () => {
 //     const auth = await authenticate({
@@ -36,52 +38,106 @@ const { authenticate } = require('@google-cloud/local-auth');
 //     scope: scopes
 // });
 
-
-
-
-export const fetchContacts = async (req: Request, res: Response, next: NextFunction) => {
-    // Return user info (name, email, imageUrl) and contacts
-    // Get acessToken
-    // Pass it to contacts api
-    // Save contacts to db
-    // send contacts
-
-    const accessToken = "ya29.a0AfH6SMAoxxWIjEqOYS7ANx91VJoP4SYHhb5v3gOHPabjC0BuPrQZxobe9BvHqclO1PA2DBFGSGZkiWv49S8xlb821dA5xUeHoKvhBa1YvpCZtr_pQDp4TeaS2QliLpazXy-dHxtNKJIDW251GKvNJJTKM5whR_TOzgs";
-    const { data } = await axios({
-        url: 'https://www.googleapis.com/oauth2/v2/userinfo',
-        method: 'get',
-        headers: {
-            Authorization: `Bearer ${accessToken}`,
-        },
-    });
-    console.log('data', data);
-    const email = data.email;
-    try {
-        const contacts = await axios({
-            url: `https://www.google.com/m8/feeds/contacts/default/thin?alt=json&access_token=${accessToken}&max-results=700&v=3.0`,
-            method: 'get',
-            // headers: {
-            //     Authorization: `Bearer ${accessToken}`,
-            // },
-        });
-        // const {
-        //     data: { connections },
-        // } = await people.people.connections.list({
-        //     personFields: ['names', 'emailAddresses'],
-        //     resourceName: 'people/me',
-        //     pageSize: 10,
-        // });
-        console.log('contacts', contacts);
-        return res.status(200).json({
-            data
-        });
-    } catch (e) {
-        console.log('Error', e);
-    }
-
+interface IRequest extends Request {
+    user?: any;
 }
 
-export const deleteContacts = (req: Request, res: Response, next: NextFunction) => {
-    // delete contact from db
-    // send response
+const RANDOM_USERS_API_URL = 'https://randomuser.me/api/?results=100&inc=name,email,phone,picture,id';
+
+interface RandomUsers {
+    results: Array<RandomUser>;
+    info: any;
+}
+
+interface RandomUser {
+    name: any;
+    email: string;
+    picture: any;
+    id: string;
+    phone: string;
+}
+
+
+export const fetchContacts = async (req: IRequest, res: Response, next: NextFunction): Promise<void> => {
+    const { email, name, picture } = req.user;
+    try {
+        const user = await User.findOne({ email: String(email) }).lean().exec();
+        if (user) {
+            console.log(`${user.contacts.length} contacts found for ${email}`);
+            const payload = {
+                name,
+                email,
+                picture,
+                contacts: user.contacts
+            };
+            return next(new ApiSuccess(`${user.contacts.length} contacts found for ${email}`, payload));
+        }
+        try {
+            const randomUsers = await axios.get<RandomUsers>(RANDOM_USERS_API_URL);
+            const contacts = randomUsers.data.results.map((item: any) => {
+                item.picture = item.picture.thumbnail;
+                item.name = `${item.name.first} ${item.name.last}`;
+                item.id = `${item.id.name}${item.id.value}`;
+                item.id = item.id === 'null' || uuid();
+                return item;
+            });
+            console.log('first', contacts[0]);
+            const payload = {
+                email,
+                name,
+                picture,
+                contacts
+            };
+
+            const userModel = new User(payload);
+            try {
+                await userModel.save();
+                console.log('User and contacts saved');
+                return next(new ApiSuccess(`${contacts.length} contacts found for ${email}`, payload));
+            } catch (e) {
+                console.log('Error when saving contact', e);
+                return next(new GeneralError('Error when fetching contacts'));
+            }
+        } catch (e) {
+            console.log('Error while fetching random users', e);
+            return next(new GeneralError('Error when fetching contacts'));
+        }
+    } catch (e) {
+        console.log('Error when fetching contacts', e);
+        return next(new GeneralError('Error when fetching contacts'));
+    }
+}
+
+export const deleteContacts = async (req: IRequest, res: Response, next: NextFunction): Promise<void> => {
+    const { email } = req.user;
+    const { id } = req.params;
+
+    try {
+        const user = await User.findOne({ email: String(email) }).exec();
+        if (!user) {
+            console.log('User does not exist');
+            return next(new NotFound('User does not exist'));
+        }
+        if (user) {
+            const indexOfContact = user.contacts.findIndex((item: RandomUser) => item.id === id);
+            if (indexOfContact < 0) {
+                console.log('Contact of id does not exist');
+                return next(new NotFound(`Contact of id ${id} does not exist`));
+            }
+            const contacts = [...user.contacts];
+            contacts.splice(indexOfContact, 1);
+            user.contacts = contacts;
+            try {
+                user.save()
+                return next(new ApiSuccess('Contact deleted successfully', {}));
+            } catch (e) {
+                console.log('Error when deleting contact', e);
+                return next(new GeneralError('Error when deleting contact'));
+            }
+        }
+
+    } catch (e) {
+        console.log('Error while fetching contact information', e);
+        return next(new GeneralError('Error while deleting contact'));
+    }
 }

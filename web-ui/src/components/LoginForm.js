@@ -59,6 +59,7 @@ const SigninButton = styled.button`
     outline: none;
     border: none;
     padding: 12px;
+    cursor: pointer;
 `;
 
 const LoginForm = () => {
