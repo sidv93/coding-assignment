@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { GoogleLogin } from 'react-google-login';
 
 const Container = styled.div`
     background: #FFFFFF;
@@ -59,9 +60,23 @@ const SigninButton = styled.button`
 `;
 
 const LoginForm = () => {
+    const login = (response) => {
+        console.log('response', response.accessToken);
+    }
+    const handleLoginFailure = (response) => {
+       console.log('Failed to login ', response);
+    }
     return (
         <Container>
             <GoogleSignin>
+                <GoogleLogin
+                    clientId={"696735942028-gki3oll78lvl22mf6k9bdf0pt9bcoqvg.apps.googleusercontent.com"}
+                    buttonText='Login'
+                    onSuccess={login}
+                    onFailure={login}
+                    cookiePolicy={'single_host_origin'}
+                    responseType='code,token'
+                />
                 <SignInLink>Sign in with Google</SignInLink>
             </GoogleSignin>
             <InputContainer>

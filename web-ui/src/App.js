@@ -4,8 +4,8 @@ import Contacts from './pages/Contacts';
 
 function App() {
   return (
-    // <Login />
-    <Contacts />
+    <Login />
+    // <Contacts />
   );
 }
 
