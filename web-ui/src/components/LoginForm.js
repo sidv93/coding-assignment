@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { GoogleLogin } from 'react-google-login';
+import { useGlobalDispatchContext } from '../context/globalContext';
+import { useHistory } from 'react-router-dom';
 
 const Container = styled.div`
     background: #FFFFFF;
@@ -60,8 +62,12 @@ const SigninButton = styled.button`
 `;
 
 const LoginForm = () => {
+    const history = useHistory();
+    const dispatch = useGlobalDispatchContext();
     const login = (response) => {
         console.log('response', response.accessToken);
+        dispatch({type: 'SET_ACCESS_TOKEN', accessToken: response.accessToken});
+        history.push('/contacts');
     }
     const handleLoginFailure = (response) => {
         console.log('Failed to login ', response);

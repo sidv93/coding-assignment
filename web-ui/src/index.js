@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import { createGlobalStyle } from 'styled-components';
+import { GlobalProvider } from './context/globalContext';
 
 const GlobalStyles = createGlobalStyle`
   html {
@@ -28,8 +29,10 @@ const GlobalStyles = createGlobalStyle`
 
 ReactDOM.render(
   <React.StrictMode>
-    <GlobalStyles />
-    <App />
+    <GlobalProvider>
+      <GlobalStyles />
+      <App />
+    </GlobalProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

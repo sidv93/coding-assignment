@@ -88,7 +88,6 @@ const Login = () => {
             <V1 src={Vector1} />
             <V2 src={Vector2} />
             <LoginForm />
-
         </Container>
     );
 };

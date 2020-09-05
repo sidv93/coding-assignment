@@ -5,7 +5,7 @@ import DeleteIcon from '../assets/icons/delete-icon.svg';
 const Th = styled.th`
     font-family: Poppins;
     font-style: normal;
-    font-weight: normal;
+    font-weight: bold;
     font-size: 0.8rem;
     line-height: 1rem;
     letter-spacing: 0.08em;
