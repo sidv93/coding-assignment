@@ -5,6 +5,7 @@ import Logout from '../assets/icons/logout.svg';
 import Ellipse49 from '../assets/icons/ellipse49.svg';
 import Ellipse50 from '../assets/icons/ellipse50.svg';
 import { useHistory } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const Container = styled.div`
     width: 100%;
@@ -17,7 +18,7 @@ const Container = styled.div`
     justify-content: space-between;
     align-items: center;
 `;
-const DetailsContainer = styled.div`
+const DetailsContainer = styled(motion.div)`
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -88,10 +89,21 @@ const Header = ({ details }) => {
     }
     return (
         <Container>
-            <El49 src={Ellipse49} />
-            <El50 src={Ellipse50} />
-            <DetailsContainer>
-                <ProfilePicture src={details.picture} />
+            <El49 src={Ellipse49} alt="ellipse-background" />
+            <El50 src={Ellipse50} alt="ellipse-background" />
+            <DetailsContainer
+                initial={{
+                    opacity: 0
+                }}
+                animate={{
+                    opacity: 1
+                }}
+                transition={{
+                    duration: 0.6,
+                    ease: [0.6, 0.05, -0.01, 0.9]
+                }}
+            >
+                <ProfilePicture src={details.picture} alt="profile-picture" />
                 <NameEmailContainer>
                     <Name>{details.name}</Name>
                     <Email>{details.email}</Email>
@@ -100,13 +112,13 @@ const Header = ({ details }) => {
             <GoogleLogout
                 clientId="696735942028-gki3oll78lvl22mf6k9bdf0pt9bcoqvg.apps.googleusercontent.com"
                 render={renderProps => (
-                    <LogoutButton src={Logout} onClick={renderProps.onClick} disabled={renderProps.disabled} />
+                    <LogoutButton src={Logout} onClick={renderProps.onClick} disabled={renderProps.disabled} alt="logout-button" />
                 )}
                 buttonText="Logout"
                 onLogoutSuccess={logout}
+                aria-label="logout-button"
             >
             </GoogleLogout>
-            {/* <LogoutButton src={Logout} /> */}
         </Container>
     );
 };

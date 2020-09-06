@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 
-const Container = styled.div`
+const Container = styled(motion.div)`
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -32,7 +33,18 @@ const Count = styled.p`
 
 const TableHeader = ({ count }) => {
     return (
-        <Container>
+        <Container
+            initial={{
+                opacity: 0
+            }}
+            animate={{
+                opacity: 1
+            }}
+            transition={{
+                duration: 0.6,
+                ease: [0.6, 0.05, -0.01, 0.9]
+            }}
+        >
             <Title>Contacts&nbsp;</Title>
             <Count>(&nbsp;{count}&nbsp;)</Count>
         </Container>

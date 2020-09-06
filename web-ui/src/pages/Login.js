@@ -81,14 +81,14 @@ const V2 = styled.img`
 const Login = () => {
     return (
         <Container>
-            <El51 src={Ellipse51} />
-            <El52 src={Ellipse52} />
-            <El56 src={Ellipse56} />
-            <El55 src={Ellipse55} />
-            <El54 src={Ellipse54} />
-            <El53 src={Ellipse53} />
-            <V1 src={Vector1} />
-            <V2 src={Vector2} />
+            <El51 src={Ellipse51} alt="ellipse-background-element" />
+            <El52 src={Ellipse52} alt="ellipse-background-element" />
+            <El56 src={Ellipse56} alt="ellipse-background-element" />
+            <El55 src={Ellipse55} alt="ellipse-background-element" />
+            <El54 src={Ellipse54} alt="ellipse-background-element" />
+            <El53 src={Ellipse53} alt="ellipse-background-element" />
+            <V1 src={Vector1} alt="ellipse-background" />
+            <V2 src={Vector2} alt="ellipse-background" />
             <LoginForm />
         </Container>
     );

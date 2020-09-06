@@ -1,7 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
 import DeleteIcon from '../assets/icons/delete-icon.svg';
+import { motion } from 'framer-motion';
 
+const Container = styled(motion.div)`
+    height: 75vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin: 20px 0;
+`;
+const Table = styled.table`
+    width: 100%;
+    border-collapse: seperate;
+     border-spacing: 0 8px;
+     overflow-x: hidden;
+`;
 const Th = styled.th`
     font-family: Poppins;
     font-style: normal;
@@ -13,7 +26,7 @@ const Th = styled.th`
     text-transform: uppercase;
     text-align: left;
 `;
-const Tr = styled.tr`
+const Tr = styled(motion.tr)`
     background: #FFFFFF;
     box-shadow: 0px 2px 6px rgba(5, 62, 209, 0.14);
     border-radius: 8px;
@@ -43,9 +56,17 @@ const NameContainer = styled.div`
         visibility: hidden;
         height: 20px;
         width: 20px;
-        /* background: black; */
         margin-right: 10px;
     }
+`;
+const EmailContainer = styled.div`
+    display: flex;
+    justify-content: flex-start;
+`;
+const PhoneContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    padding-right: 30px;
 `;
 const ProfilePicture = styled.img`
     width: 40px;
@@ -57,18 +78,21 @@ const ProfilePicture = styled.img`
 
 const Contacts = ({ contacts, deleteContact }) => {
     if (!contacts.length) {
-        return <p style={{textAlign: 'center'}}>No contacts found</p>
+        return <p style={{ textAlign: 'center' }}>No contacts found</p>
     }
     return (
-        <div style={{
-            height: '75vh',
-            overflowY: 'scroll',
-        }}>
-            <table
-                style={{
-                    width: '100%',
-                    borderCollapse: 'seperate', borderSpacing: ' 0 8px',
-                }}>
+        <Container
+            initial={{
+                opacity: 0
+            }}
+            animate={{
+                opacity: 1
+            }}
+            transition={{
+                duration: 0.6,
+                ease: [0.6, 0.05, -0.01, 0.9]
+            }}>
+            <Table>
                 <thead>
                     <tr>
                         <Th><span style={{ paddingLeft: '80px' }}>Name</span></Th>
@@ -76,34 +100,36 @@ const Contacts = ({ contacts, deleteContact }) => {
                         <Th>Phone</Th>
                     </tr>
                 </thead>
-                <tbody style={{ overflowY: 'scroll' }}>
+                <tbody>
                     {
-                        contacts.map((contact, index) => <Tr key={contact.email}>
+                        contacts.map((contact) => <Tr whileHover={{
+                            scale: 1.05
+                        }}
+                        key={contact.email}>
                             <Td>
                                 <NameContainer>
-                                    {/* <div className="selectBox" /> */}
                                     <input type="checkbox" className="selectBox" />
                                     <ProfilePicture src={contact.picture} alt="profile-picture" />
                                     {contact.name}
                                 </NameContainer>
                             </Td>
                             <Td>
-                                <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                                <EmailContainer>
                                     {contact.email}
-                                </div>
+                                </EmailContainer>
                             </Td>
                             <Td>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', paddingRight: '30px' }}>
+                                <PhoneContainer>
                                     {contact.phone}
-                                    <img src={DeleteIcon} width="20px" height="20px" onClick={() => deleteContact(contact.id)} />
-                                </div>
+                                    <img src={DeleteIcon} width="20px" height="20px" onClick={() => deleteContact(contact.id)} alt="delete-icon" />
+                                </PhoneContainer>
                             </Td>
                         </Tr>)
                     }
                 </tbody>
-            </table>
-        </div>
-    );
+            </Table>
+        </Container>
+    )
 };
 
 export default Contacts;
