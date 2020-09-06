@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import { GoogleLogout } from 'react-google-login';
 import Logout from '../assets/icons/logout.svg';
 import Ellipse49 from '../assets/icons/ellipse49.svg';
 import Ellipse50 from '../assets/icons/ellipse50.svg';
+import { useHistory } from 'react-router-dom';
 
 const Container = styled.div`
     width: 100%;
@@ -21,11 +23,10 @@ const DetailsContainer = styled.div`
     justify-content: space-between;
     z-index: 2;
 `;
-const ProfilePicture = styled.div`
+const ProfilePicture = styled.img`
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: white;
     margin: 0 12px;
     border: 2px solid #FFFFFF;
 `;
@@ -59,9 +60,6 @@ const Email = styled.p`
     padding: 0;
 `;
 const LogoutButton = styled.img`
-    /* height: 50px;
-    width: 100px;
-    background: white; */
     cursor: pointer;
     z-index: 2;
 `;
@@ -83,18 +81,32 @@ const El50 = styled.img`
 `;
 
 const Header = ({ details }) => {
+    const history = useHistory();
+    const logout = () => {
+        window.localStorage.removeItem('accessToken');
+        history.push('/');
+    }
     return (
         <Container>
             <El49 src={Ellipse49} />
             <El50 src={Ellipse50} />
             <DetailsContainer>
-                <ProfilePicture />
+                <ProfilePicture src={details.picture} />
                 <NameEmailContainer>
-                    <Name>Alex Costa</Name>
-                    <Email>siddhuv93@gmail.com</Email>
+                    <Name>{details.name}</Name>
+                    <Email>{details.email}</Email>
                 </NameEmailContainer>
             </DetailsContainer>
-            <LogoutButton src={Logout} />
+            <GoogleLogout
+                clientId="696735942028-gki3oll78lvl22mf6k9bdf0pt9bcoqvg.apps.googleusercontent.com"
+                render={renderProps => (
+                    <LogoutButton src={Logout} onClick={renderProps.onClick} disabled={renderProps.disabled} />
+                )}
+                buttonText="Logout"
+                onLogoutSuccess={logout}
+            >
+            </GoogleLogout>
+            {/* <LogoutButton src={Logout} /> */}
         </Container>
     );
 };

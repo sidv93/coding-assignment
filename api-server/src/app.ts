@@ -16,8 +16,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet());
 
 const corsOptions = {
-    methods: 'GET,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Content-Type',
+    methods: 'GET,PUT,PATCH,POST,DELETE, OPTIONS',
+    allowedHeaders: ['Content-Type', 'Access-Control-Allow-Origin', 'Authorization'],
 };
 app.use(cors(corsOptions));
 

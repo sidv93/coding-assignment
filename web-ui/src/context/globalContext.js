@@ -19,7 +19,7 @@ const globalReducer = (state, action) => {
 
 export const GlobalProvider = ({ children }) => {
     const [state, dispatch] = useReducer(globalReducer, {
-        accessToken: '',
+        accessToken: window.localStorage.getItem('accessToken') || '',
     });
 
     return (

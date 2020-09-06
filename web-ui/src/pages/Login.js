@@ -67,6 +67,7 @@ const V1 = styled.img`
     height: 606px;
     left: 0px;
     top: 4px;
+    z-index: 1;
 `;
 const V2 = styled.img`
     position: absolute;
@@ -74,6 +75,7 @@ const V2 = styled.img`
     height: 491.2px;
     right: 1px;
     top: 159.8px;
+    z-index: 1;
 `;
 
 const Login = () => {

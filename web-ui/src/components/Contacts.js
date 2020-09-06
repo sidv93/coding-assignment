@@ -5,12 +5,13 @@ import DeleteIcon from '../assets/icons/delete-icon.svg';
 const Th = styled.th`
     font-family: Poppins;
     font-style: normal;
-    font-weight: bold;
-    font-size: 0.8rem;
+    font-weight: 900;
+    font-size: 1rem;
     line-height: 1rem;
     letter-spacing: 0.08em;
     color: #B0C6FF;
     text-transform: uppercase;
+    text-align: left;
 `;
 const Tr = styled.tr`
     background: #FFFFFF;
@@ -20,13 +21,13 @@ const Tr = styled.tr`
     cursor: pointer;
     box-sizing: border-box;
 
-    /* &:hover {
+    &:hover {
         border: 1px solid #4EB4FF;
 
         .selectBox {
-            display: block;
+            visibility: visible;
         }
-    } */
+    }
 `;
 const Td = styled.td`
     text-align: center;
@@ -36,59 +37,70 @@ const Td = styled.td`
 const NameContainer = styled.div`
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 10px 0;
+    justify-content: flex-start;
+    padding: 10px 40px;
 
     .selectBox {
-        /* display: none; */
+        visibility: hidden;
         height: 20px;
         width: 20px;
         background: black;
         margin-right: 10px;
     }
 `;
-const ProfilePicture = styled.div`
+const ProfilePicture = styled.img`
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: black;
     margin: 0 12px;
     border: 1px solid #FF0000;
 `;
 
 const Contacts = ({ contacts }) => {
     return (
-        <table
-            style={{
-                width: '100%',
-                borderCollapse: 'seperate', borderSpacing: ' 0 8px'
-            }}>
-            <thead>
-                <tr>
-                    <Th>Name</Th>
-                    <Th>Email</Th>
-                    <Th>Phone</Th>
-                </tr>
-            </thead>
-            <tbody style={{ overflowY: 'scroll' }}>
-                {
-                    contacts.map((contact, index) => <Tr key={String(index)}>
-                        <Td>
-                            <NameContainer>
-                                <div className="selectBox" />
-                                <ProfilePicture />
-                                {contact.name}
-                            </NameContainer>
-                        </Td>
-                        <Td>{contact.email}</Td>
-                        <Td>
-                            {contact.phoneNumber}
-                            <img src={DeleteIcon} width="20px" height="20px" />
-                        </Td>
-                    </Tr>)
-                }
-            </tbody>
-        </table>
+        <div style={{
+            height: '75vh',
+            overflowY: 'scroll',
+        }}>
+            <table
+                style={{
+                    width: '100%',
+                    borderCollapse: 'seperate', borderSpacing: ' 0 8px',
+                }}>
+                <thead>
+                    <tr>
+                        <Th><span style={{paddingLeft: '80px'}}>Name</span></Th>
+                        <Th>Email</Th>
+                        <Th>Phone</Th>
+                    </tr>
+                </thead>
+                <tbody style={{ overflowY: 'scroll' }}>
+                    {
+                        contacts.map((contact, index) => <Tr key={contact.email}>
+                            <Td>
+                                <NameContainer>
+                                    <div className="selectBox" />
+                                    <ProfilePicture src={contact.picture} alt="profile-picture" />
+                                    {contact.name}
+                                </NameContainer>
+                            </Td>
+                            <Td>
+                                <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                                    {contact.email}
+                                </div>
+                            </Td>
+                            <Td>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', paddingRight: '30px' }}>
+                                    {contact.phone}
+                                    <img src={DeleteIcon} width="20px" height="20px" />
+                                </div>
+                            </Td>
+                        </Tr>)
+                    }
+                </tbody>
+            </table>
+        </div>
+
     );
 };
 

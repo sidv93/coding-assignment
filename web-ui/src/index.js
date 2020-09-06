@@ -11,6 +11,21 @@ const GlobalStyles = createGlobalStyle`
   *,*:before, *:after {
     box-sizing: border-box;
   }
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #F4F7FF;
+    border-radius: 4px;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #053ED1;
+    border-radius: 4px;
+  }
   body {
     margin: 0;
     padding: 0;

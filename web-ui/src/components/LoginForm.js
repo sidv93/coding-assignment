@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { GoogleLogin } from 'react-google-login';
 import { useGlobalDispatchContext } from '../context/globalContext';
 import { useHistory } from 'react-router-dom';
+import GoogleIcon from '../assets/icons/google.svg';
 
 const Container = styled.div`
     background: #FFFFFF;
@@ -15,9 +16,14 @@ const Container = styled.div`
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    position: relative;
+    z-index: 2;
 `;
-const GoogleSignin = styled.div`
-
+const GoogleSignin = styled.button`
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background: none;
 `;
 const SignInLink = styled.h2`
     font-family: Poppins;
@@ -27,6 +33,7 @@ const SignInLink = styled.h2`
     line-height: 1.2rem;
     letter-spacing: 0.08rem;
     color: #222222;
+    /* margin: 0; */
 `;
 const InputContainer = styled.div`
     display: flex;
@@ -61,13 +68,18 @@ const SigninButton = styled.button`
     padding: 12px;
     cursor: pointer;
 `;
+const GoogleLogo = styled.img`
+    width: 30.93px;
+    height: 35px;
+`;
 
 const LoginForm = () => {
     const history = useHistory();
     const dispatch = useGlobalDispatchContext();
     const login = (response) => {
         console.log('response', response.accessToken);
-        dispatch({type: 'SET_ACCESS_TOKEN', accessToken: response.accessToken});
+        dispatch({ type: 'SET_ACCESS_TOKEN', accessToken: response.accessToken });
+        window.localStorage.setItem('accessToken', response.accessToken)
         history.push('/contacts');
     }
     const handleLoginFailure = (response) => {
@@ -78,13 +90,18 @@ const LoginForm = () => {
             <GoogleSignin>
                 <GoogleLogin
                     clientId={"696735942028-gki3oll78lvl22mf6k9bdf0pt9bcoqvg.apps.googleusercontent.com"}
+                    render={renderProps => (
+                        <GoogleSignin onClick={renderProps.onClick} disabled={renderProps.disabled}>
+                            <GoogleLogo src={GoogleIcon} alt="google-icon" />
+                            <SignInLink>Sign in with Google</SignInLink>
+                        </GoogleSignin>
+                    )}
                     buttonText='Login'
                     onSuccess={login}
                     onFailure={login}
                     cookiePolicy={'single_host_origin'}
                     responseType='code,token'
                 />
-                <SignInLink>Sign in with Google</SignInLink>
             </GoogleSignin>
             <InputContainer>
                 <InputField type="email" placeholder="Email" />
