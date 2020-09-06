@@ -96,7 +96,7 @@ const Contacts = () => {
         } else {
             history.push('/');
         }
-    }, []);
+    }, [accessToken, history]);
     return (
         <Container>
             <V3 src={Vector3} alt="ellipse-background" />
