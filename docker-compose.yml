@@ -1,0 +1,66 @@
+version: "3.8"
+
+services:
+  web:
+    restart: on-failure
+    build:
+      context: ./web-ui
+      args:
+        - WEB_PORT=${API_PORT}
+    env_file: .env
+    labels:
+      - "traefik.http.services.web.loadbalancer.server.port=80"
+      - "traefik.http.routers.web.rule=PathPrefix(`/cts`)"
+      - "traefik.http.routers.web.middlewares=web-stripprefix"
+      - "traefik.http.middlewares.web-stripprefix.stripprefix.prefixes=/cts"
+      - "traefik.enable=true"
+    healthcheck:
+      test: "exit 0"
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - traefik_network
+
+  api:
+    restart: on-failure
+    build:
+      context: ./api
+      args:
+        - API_PORT=${API_PORT}
+    env_file: .env
+    labels:
+      - "traefik.http.services.inventory.loadbalancer.server.port=80"
+      - "traefik.http.routers.inventory.rule=PathPrefix(`/api/v1`)"
+      - "traefik.enable=true"
+    healthcheck:
+      test: "exit 0"
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - traefik_network
+
+  traefik:
+    restart: on-failure
+    image: "traefik:v2.1"
+    container_name: "traefik"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
+    networks:
+      - poc_network
+
+networks:
+  traefik_network:
+    driver: bridge
