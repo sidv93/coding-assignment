@@ -22,7 +22,6 @@ const Container = styled(motion.div)`
 `;
 const GoogleSignin = styled.div`
     border: none;
-    /* outline: none; */
     cursor: pointer;
     background: none;
     display: flex;
@@ -87,11 +86,13 @@ const LoginForm = () => {
     const dispatch = useGlobalDispatchContext();
     const [error, setError] = useState('');
     const login = (response) => {
+        console.log('login response', response);
         dispatch({ type: 'SET_ACCESS_TOKEN', accessToken: response.accessToken });
         window.localStorage.setItem('accessToken', response.accessToken)
         history.push('/contacts');
     }
     const handleLoginFailure = (response) => {
+        console.log('login failure', response);
         setError('Failed to login, try again');
     }
     return (
