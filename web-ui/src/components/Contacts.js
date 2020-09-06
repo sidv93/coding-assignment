@@ -32,7 +32,6 @@ const Tr = styled.tr`
 const Td = styled.td`
     text-align: center;
     border-style: none;
-    /* border: 1px solid #4EB4FF; */
 `;
 const NameContainer = styled.div`
     display: flex;
@@ -44,7 +43,7 @@ const NameContainer = styled.div`
         visibility: hidden;
         height: 20px;
         width: 20px;
-        background: black;
+        /* background: black; */
         margin-right: 10px;
     }
 `;
@@ -56,7 +55,10 @@ const ProfilePicture = styled.img`
     border: 1px solid #FF0000;
 `;
 
-const Contacts = ({ contacts }) => {
+const Contacts = ({ contacts, deleteContact }) => {
+    if (!contacts.length) {
+        return <p style={{textAlign: 'center'}}>No contacts found</p>
+    }
     return (
         <div style={{
             height: '75vh',
@@ -69,7 +71,7 @@ const Contacts = ({ contacts }) => {
                 }}>
                 <thead>
                     <tr>
-                        <Th><span style={{paddingLeft: '80px'}}>Name</span></Th>
+                        <Th><span style={{ paddingLeft: '80px' }}>Name</span></Th>
                         <Th>Email</Th>
                         <Th>Phone</Th>
                     </tr>
@@ -79,7 +81,8 @@ const Contacts = ({ contacts }) => {
                         contacts.map((contact, index) => <Tr key={contact.email}>
                             <Td>
                                 <NameContainer>
-                                    <div className="selectBox" />
+                                    {/* <div className="selectBox" /> */}
+                                    <input type="checkbox" className="selectBox" />
                                     <ProfilePicture src={contact.picture} alt="profile-picture" />
                                     {contact.name}
                                 </NameContainer>
@@ -92,7 +95,7 @@ const Contacts = ({ contacts }) => {
                             <Td>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', paddingRight: '30px' }}>
                                     {contact.phone}
-                                    <img src={DeleteIcon} width="20px" height="20px" />
+                                    <img src={DeleteIcon} width="20px" height="20px" onClick={() => deleteContact(contact.id)} />
                                 </div>
                             </Td>
                         </Tr>)
@@ -100,7 +103,6 @@ const Contacts = ({ contacts }) => {
                 </tbody>
             </table>
         </div>
-
     );
 };
 

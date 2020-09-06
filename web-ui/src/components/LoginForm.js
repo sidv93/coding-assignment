@@ -19,11 +19,15 @@ const Container = styled.div`
     position: relative;
     z-index: 2;
 `;
-const GoogleSignin = styled.button`
+const GoogleSignin = styled.div`
     border: none;
     outline: none;
     cursor: pointer;
     background: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 `;
 const SignInLink = styled.h2`
     font-family: Poppins;
@@ -71,6 +75,7 @@ const SigninButton = styled.button`
 const GoogleLogo = styled.img`
     width: 30.93px;
     height: 35px;
+    
 `;
 
 const LoginForm = () => {
@@ -87,7 +92,7 @@ const LoginForm = () => {
     }
     return (
         <Container>
-            <GoogleSignin>
+            {/* <GoogleSignin> */}
                 <GoogleLogin
                     clientId={"696735942028-gki3oll78lvl22mf6k9bdf0pt9bcoqvg.apps.googleusercontent.com"}
                     render={renderProps => (
@@ -102,7 +107,7 @@ const LoginForm = () => {
                     cookiePolicy={'single_host_origin'}
                     responseType='code,token'
                 />
-            </GoogleSignin>
+            {/* </GoogleSignin> */}
             <InputContainer>
                 <InputField type="email" placeholder="Email" />
                 <InputField type="password" placeholder="Password" />

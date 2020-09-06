@@ -7,6 +7,7 @@ import Vector3 from '../assets/icons/vector3.svg';
 import Vector4 from '../assets/icons/vector4.svg';
 import { useGlobalStateContext } from '../context/globalContext';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 const API_URL = 'http://localhost:4000/api/v1/contacts';
 
@@ -40,6 +41,7 @@ const V4 = styled.img`
 `;
 
 const Contacts = () => {
+    const history = useHistory();
     const { accessToken } = useGlobalStateContext();
     const [userDetails, setUserDetails] = useState({
         name: '',
@@ -47,8 +49,23 @@ const Contacts = () => {
         picture: '',
         contacts: []
     });
+    const deleteContact = async (id) => {
+        const { data } = await axios(`${API_URL}/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+        if (data.status === 'success') {
+            const indexOfContact = userDetails.contacts.findIndex((item) => item.id === id);
+            const contacts = [...userDetails.contacts];
+            contacts.splice(indexOfContact, 1);
+            setUserDetails({
+                ...userDetails, contacts
+            });
+        }
+    }
     useEffect(() => {
-        console.log('in use effect');
         const fetchContacts = async () => {
             try {
                 const { data } = await axios(API_URL, {
@@ -59,10 +76,19 @@ const Contacts = () => {
                 setUserDetails(data.data);
             } catch (e) {
                 console.log('error when fetching contacts', e);
-                setUserDetails();
+                setUserDetails({
+                    name: '',
+                    email: '',
+                    picture: '',
+                    contacts: []
+                });
             }
         }
-        fetchContacts();
+        if (accessToken) {
+            fetchContacts();
+        } else {
+            history.push('/');
+        }
     }, []);
     return (
         <Container>
@@ -71,7 +97,7 @@ const Contacts = () => {
             <Header details={{ name: userDetails.name, email: userDetails.email, picture: userDetails.picture }} />
             <ContentContainer>
                 <TableHeader count={userDetails.contacts.length} />
-                <ContactContent contacts={userDetails.contacts} />
+                <ContactContent contacts={userDetails.contacts} deleteContact={deleteContact} />
             </ContentContainer>
         </Container>
     );
