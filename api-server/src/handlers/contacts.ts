@@ -81,7 +81,6 @@ export const fetchContacts = async (req: IRequest, res: Response, next: NextFunc
                 item.id = item.id === 'null' || uuid();
                 return item;
             });
-            console.log('first', contacts[0]);
             const payload = {
                 email,
                 name,

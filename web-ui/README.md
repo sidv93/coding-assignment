@@ -1,3 +1,21 @@
+# Contacts UI
+
+This is the web application for a contacts app. Designs for this can be found in [Figma](https://www.figma.com/file/ogsdABa9Jwy5tQLChJ9gGs/Contacts-App?node-id=1%3A2). 
+
+Technologies used
+
+* React as the frontend framework
+* Context for state management
+* Framer-motion for animations
+* Netlify for deployment
+
+
+A working demo can be found [here](https://elegant-elion-b7cbe4.netlify.app/)
+
+It uses Google for authentication and fetches the user's contacts from the backend API server.
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
